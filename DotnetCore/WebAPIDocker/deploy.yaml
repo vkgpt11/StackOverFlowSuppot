@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webapi-dockerkube
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webapi-dockerkube
+    spec:
+      containers:
+      - name: webapi-dockerkube
+        image: "webapidocker:latest"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /api/values
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /api/values
+            port: 80
+      - name: webapi-dockerkube2
+        image: "webapidocker2:latest"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /api/other/values
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /api/other/values
+            port: 80
